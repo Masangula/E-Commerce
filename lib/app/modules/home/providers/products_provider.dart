@@ -1,4 +1,5 @@
 import 'package:ecommerce/app/utils/urls.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class ProductsProvider extends GetConnect {
@@ -10,7 +11,8 @@ class ProductsProvider extends GetConnect {
 
   Future fetchingProducts() async {
     Response response = await myHttpClient.get(Urls.fetchingProducts);
-
+    debugPrint("########PRODUCTS#########");
+    debugPrint(response.bodyString);
     return response;
   }
 }
