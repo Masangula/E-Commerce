@@ -1,7 +1,6 @@
 import 'package:ecommerce/app/modules/cart/models/cart_item.dart';
 import 'package:ecommerce/app/modules/home/controllers/home_controller.dart';
 import 'package:ecommerce/app/modules/home/models/product.dart';
-import 'package:ecommerce/app/routes/app_pages.dart';
 import 'package:ecommerce/app/utils/widgets/custom_toast.dart';
 import 'package:get/get.dart';
 
@@ -20,10 +19,21 @@ class ViewProductController extends GetxController {
   }
 
   void addToMycart() {
-    homeController.myCart.value.cartItems
-        .add(CartItem(product: product, count: itemCount.value));
-        CustomToast.primary("Product added to Cart successful");
-    Get.toNamed(Routes.CART);
+    var presentItemIndex = homeController.myCart.value.cartItems
+        .indexWhere((cartItem) => cartItem.id == product.id);
+    if (presentItemIndex == -1) {
+      homeController.myCart.value.cartItems.add(
+        CartItem(
+          product: product,
+          count: itemCount,
+          id: product.id!,
+        ),
+      );
+    } else {
+      homeController.myCart.value.cartItems[presentItemIndex].count.value +=
+          itemCount.value;
+    }
+    CustomToast.success("Product added to Cart successful");
   }
 
   @override

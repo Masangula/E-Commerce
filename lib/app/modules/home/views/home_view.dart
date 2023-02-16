@@ -20,11 +20,23 @@ class HomeView extends GetView<HomeController> {
           iconData: Icons.category_outlined,
         ),
         actions: [
-          CustomButton(
-            function: () {
-              Get.toNamed(Routes.CART);
-            },
-            iconData: Icons.shopping_cart_checkout_outlined,
+           Obx(
+            () => Badge(
+              alignment: AlignmentDirectional.centerEnd,
+              textColor: Theme.of(context).colorScheme.surface,
+              isLabelVisible:
+                  controller.myCart.value.cartItems.isNotEmpty,
+              label: Text(
+                controller.myCart.value.cartItems.length
+                    .toString(),
+              ),
+              child: CustomButton(
+                function: () {
+                  Get.toNamed(Routes.CART);
+                },
+                iconData: Icons.shopping_cart_checkout_outlined,
+              ),
+            ),
           ),
         ],
         bottom: PreferredSize(

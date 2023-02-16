@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/app/colors/app_colors.dart';
+import 'package:ecommerce/app/routes/app_pages.dart';
 import 'package:ecommerce/app/utils/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -22,9 +23,23 @@ class ViewProductView extends GetView<ViewProductController> {
           iconData: Icons.arrow_back_ios_new_outlined,
         ),
         actions: [
-          CustomButton(
-            function: () {},
-            iconData: Icons.shopping_cart_checkout_outlined,
+          Obx(
+            () => Badge(
+              alignment: AlignmentDirectional.centerEnd,
+              textColor: Theme.of(context).colorScheme.surface,
+              isLabelVisible:
+                  controller.homeController.myCart.value.cartItems.isNotEmpty,
+              label: Text(
+                controller.homeController.myCart.value.cartItems.length
+                    .toString(),
+              ),
+              child: CustomButton(
+                function: () {
+                  Get.toNamed(Routes.CART);
+                },
+                iconData: Icons.shopping_cart_checkout_outlined,
+              ),
+            ),
           ),
         ],
       ),
@@ -143,8 +158,8 @@ class ViewProductView extends GetView<ViewProductController> {
                                   ),
                         ),
                         Container(
-                          height: 40,
-                          width: 124,
+                          height: Get.height * 0.06,
+                          width: Get.width * 0.33,
                           decoration: BoxDecoration(
                             color:
                                 Theme.of(context).colorScheme.primaryContainer,

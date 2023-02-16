@@ -1,16 +1,18 @@
 import 'package:ecommerce/app/modules/home/models/product.dart';
+import 'package:get/get.dart';
 
 class CartItem {
   Product product;
-  int count;
-  double subtotal = 0.0;
+  int id;
+  Rx<int> count;
+  Rx<double> subtotal = 0.0.obs;
 
-  CartItem({required this.product, required this.count}) {
+  CartItem({required this.product, required this.count,required this.id,}) {
     updateSubTotal();
   }
 
   void updateSubTotal() {
-    subtotal = 0.0;
-    subtotal = product.price! * count;
+    subtotal.value = 0.0;
+    subtotal.value = (product.price! * count.value);
   }
 }
