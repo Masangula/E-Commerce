@@ -153,34 +153,46 @@ class ViewProductView extends GetView<ViewProductController> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: 10.0,
-                                  left: 10,
-                                  right: 10,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.decrementItemCount();
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 10.0,
+                                    left: 10,
+                                    right: 10,
+                                  ),
+                                  child: Icon(Icons.minimize_rounded),
                                 ),
-                                child: Icon(Icons.minimize_rounded),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  "10",
-                                  overflow: TextOverflow.clip,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                child: Obx(
+                                  () => Text(
+                                    controller.itemCount.value.toString(),
+                                    overflow: TextOverflow.clip,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.incementItemCount();
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 10,
+                                    right: 10,
+                                  ),
+                                  child: Icon(Icons.add),
                                 ),
-                                child: Icon(Icons.add),
                               ),
                             ],
                           ),
@@ -205,7 +217,9 @@ class ViewProductView extends GetView<ViewProductController> {
           minWidth: double.infinity,
           color: Theme.of(context).colorScheme.primary,
           padding: const EdgeInsets.all(10),
-          onPressed: () {},
+          onPressed: () {
+            controller.addToMycart();
+          },
           child: Text(
             "Add To Cart",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(

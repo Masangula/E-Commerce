@@ -1,4 +1,3 @@
-import 'package:ecommerce/app/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,12 +6,18 @@ class AppTheme {
     useMaterial3: true,
     colorScheme: AppTheme.lightColorScheme,
     textTheme: GoogleFonts.quicksandTextTheme(Typography.blackCupertino),
+    appBarTheme: AppBarTheme(
+      surfaceTintColor: lightColorScheme.surface,
+    ),
   );
 
   static final darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: AppTheme.darkColorScheme,
     textTheme: GoogleFonts.quicksandTextTheme(Typography.whiteCupertino),
+    appBarTheme: AppBarTheme(
+      surfaceTintColor: darkColorScheme.surface,
+    ),
   );
 
   static const lightColorScheme = ColorScheme(

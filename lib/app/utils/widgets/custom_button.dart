@@ -12,7 +12,9 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: function(),
+      onTap: () {
+        function();
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(

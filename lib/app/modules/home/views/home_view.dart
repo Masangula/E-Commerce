@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce/app/routes/app_pages.dart';
 import 'package:ecommerce/app/utils/widgets/custom_button.dart';
 import 'package:ecommerce/app/utils/widgets/product_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +21,55 @@ class HomeView extends GetView<HomeController> {
         ),
         actions: [
           CustomButton(
-            function: () {},
+            function: () {
+              Get.toNamed(Routes.CART);
+            },
             iconData: Icons.shopping_cart_checkout_outlined,
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: Size(Get.width * 0.9, Get.height * 0.12),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: Get.width * 0.8,
+                  child: TextField(
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.outline,
+                          width: 1.5,
+                        ),
+                      ),
+                      hintText: "Seach Product...",
+                      prefixIcon: const Icon(Icons.search),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: Icon(
+                    Icons.clear_all_outlined,
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
       body: Obx(
         () => controller.isGettingProducts.value
