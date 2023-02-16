@@ -7,7 +7,10 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   final ProductsProvider productsProvider = ProductsProvider();
+  final TextEditingController searchingController = TextEditingController();
   var listOfProducts = <Product>[].obs;
+  var filteredListOfProducts = <Product>[].obs;
+  var isFiltering = false.obs;
   var isGettingProducts = false.obs;
   var myCart = Cart().obs;
   @override
@@ -23,7 +26,15 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    searchingController.dispose();
     super.onClose();
+  }
+
+  void filtertingWhenSearching(String searchString) {
+    filteredListOfProducts.clear();
+    filteredListOfProducts.value = listOfProducts
+        .where((product) => product.title!.toLowerCase().contains(searchString.toLowerCase()))
+        .toList();
   }
 
   void getProducts() async {
@@ -34,7 +45,7 @@ class HomeController extends GetxController {
 
       if (response.hasError) {
         debugPrint(response.toString());
-         CustomToast.error("Error ${response.statusText}");
+        CustomToast.error("Error ${response.statusText}");
       } else {
         listOfProducts.value = productFromJson(response.bodyString!);
       }

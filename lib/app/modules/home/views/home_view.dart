@@ -20,15 +20,13 @@ class HomeView extends GetView<HomeController> {
           iconData: Icons.category_outlined,
         ),
         actions: [
-           Obx(
+          Obx(
             () => Badge(
               alignment: AlignmentDirectional.centerEnd,
               textColor: Theme.of(context).colorScheme.surface,
-              isLabelVisible:
-                  controller.myCart.value.cartItems.isNotEmpty,
+              isLabelVisible: controller.myCart.value.cartItems.isNotEmpty,
               label: Text(
-                controller.myCart.value.cartItems.length
-                    .toString(),
+                controller.myCart.value.cartItems.length.toString(),
               ),
               child: CustomButton(
                 function: () {
@@ -40,7 +38,10 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size(Get.width * 0.9, Get.height * 0.12),
+          preferredSize: Size(
+            Get.width * 0.9,
+            Get.height * 0.12,
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -50,6 +51,16 @@ class HomeView extends GetView<HomeController> {
                 SizedBox(
                   width: Get.width * 0.8,
                   child: TextField(
+                    controller: controller.searchingController,
+                    onChanged: (searchString) {
+                      if (searchString == "") {
+                        controller.isFiltering.value = false;
+                        controller.filteredListOfProducts.clear();
+                      } else {
+                        controller.isFiltering.value = true;
+                        controller.filtertingWhenSearching(searchString);
+                      }
+                    },
                     onTapOutside: (event) {
                       FocusScope.of(context).unfocus();
                     },
@@ -63,6 +74,16 @@ class HomeView extends GetView<HomeController> {
                       ),
                       hintText: "Seach Product...",
                       prefixIcon: const Icon(Icons.search),
+                      suffixIcon: Obx(() => controller.isFiltering.value
+                          ? IconButton(
+                              onPressed: () {
+                                controller.searchingController.clear();
+                                controller.isFiltering.value = false;
+                                controller.filteredListOfProducts.clear();
+                              },
+                              icon: const Icon(Icons.close),
+                            )
+                          : const SizedBox(),)
                     ),
                   ),
                 ),
@@ -88,19 +109,29 @@ class HomeView extends GetView<HomeController> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: MasonryGridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
-                  itemCount: controller.listOfProducts.length,
-                  itemBuilder: (context, index) {
-                    return ProductItemWidget(
-                        product: controller.listOfProducts[index]);
-                  },
-                ),
-              ),
+            : ((controller.isFiltering.value &&
+                        controller.filteredListOfProducts.isEmpty) ||
+                    controller.listOfProducts.isEmpty)
+                ? const Center(
+                    child: Text("Sorry, No product found!"),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MasonryGridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 4,
+                      crossAxisSpacing: 4,
+                      itemCount: controller.isFiltering.value
+                          ? controller.filteredListOfProducts.length
+                          : controller.listOfProducts.length,
+                      itemBuilder: (context, index) {
+                        return ProductItemWidget(
+                            product: controller.isFiltering.value
+                                ? controller.filteredListOfProducts[index]
+                                : controller.listOfProducts[index]);
+                      },
+                    ),
+                  ),
       ),
     );
   }
