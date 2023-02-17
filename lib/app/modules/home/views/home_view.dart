@@ -1,3 +1,5 @@
+import 'package:ecommerce/app/colors/app_colors.dart';
+import 'package:ecommerce/app/modules/home/models/filters.dart';
 import 'package:ecommerce/app/routes/app_pages.dart';
 import 'package:ecommerce/app/utils/widgets/custom_button.dart';
 import 'package:ecommerce/app/utils/widgets/product_item_widget.dart';
@@ -65,38 +67,44 @@ class HomeView extends GetView<HomeController> {
                       FocusScope.of(context).unfocus();
                     },
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.outline,
-                          width: 1.5,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                            width: 1.5,
+                          ),
                         ),
-                      ),
-                      hintText: "Seach Product...",
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: Obx(() => controller.isFiltering.value
-                          ? IconButton(
-                              onPressed: () {
-                                controller.searchingController.clear();
-                                controller.isFiltering.value = false;
-                                controller.filteredListOfProducts.clear();
-                              },
-                              icon: const Icon(Icons.close),
-                            )
-                          : const SizedBox(),)
-                    ),
+                        hintText: "Seach Product...",
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: Obx(
+                          () => controller.isFiltering.value
+                              ? IconButton(
+                                  onPressed: () {
+                                    controller.searchingController.clear();
+                                    controller.isFiltering.value = false;
+                                    controller.filteredListOfProducts.clear();
+                                  },
+                                  icon: const Icon(Icons.close),
+                                )
+                              : const SizedBox(),
+                        )),
                   ),
                 ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  child: Icon(
-                    Icons.clear_all_outlined,
-                    color: Theme.of(context).colorScheme.surface,
+                GestureDetector(
+                  onTap: () {
+                    buildFilterSelectionDialog(context);
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Icon(
+                      Icons.clear_all_outlined,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                 )
               ],
@@ -133,6 +141,57 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
       ),
+    );
+  }
+
+  Future<dynamic> buildFilterSelectionDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Filters",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SizedBox(
+                height: Get.height * 0.40,
+                child: Column(children: [
+                  buildFilterItemWidget(
+                      filter: controller.listOfFiltersOptions.first),
+                  const Divider(),
+                  buildFilterItemWidget(
+                      filter: controller.listOfFiltersOptions[1]),
+                  const Divider(),
+                  buildFilterItemWidget(
+                      filter: controller.listOfFiltersOptions.last),
+                  const Divider(),
+                ]),
+              ),
+            ),
+          );
+        });
+  }
+
+  ListTile buildFilterItemWidget({Filter? filter}) {
+    return ListTile(
+      title: Text(
+        filter!.displayText!,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(filter.description!),
+      trailing: Obx(
+        () => controller.selectedFilter.value == filter.filterType
+            ? const Icon(
+                Icons.done_outline_rounded,
+                color: AppColors.greenColor,
+              )
+            : const SizedBox(),
+      ),
+      onTap: () {
+        controller.filteringProductsBasedOnFilter(filter.filterType!);
+      },
     );
   }
 }
