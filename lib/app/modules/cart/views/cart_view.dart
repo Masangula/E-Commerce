@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/app/colors/app_colors.dart';
 import 'package:ecommerce/app/modules/cart/models/cart_item.dart';
 import 'package:ecommerce/app/utils/widgets/custom_button.dart';
+import 'package:ecommerce/app/utils/widgets/custom_messages.dart';
 import 'package:ecommerce/app/utils/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 
@@ -26,12 +27,13 @@ class CartView extends GetView<CartController> {
         centerTitle: true,
       ),
       body: Obx(
-        () => controller.homeController.myCart.value.totalAmount == 0.0
-            ? const Center(
-                child: Text(
-                  'Your Cart is Empty!',
-                  style: TextStyle(fontSize: 20),
-                ),
+        () => controller.homeController.myCart.value.totalAmount.value == 0.0
+            ?  CustomMessage(
+                textMessage: 'Your Cart is Empty!',
+                lottiesName: "noCart.json",
+                leftPadding: Get.width * 0.28,
+                height: 80,
+                width: 80,
               )
             : SingleChildScrollView(
                 child: Column(

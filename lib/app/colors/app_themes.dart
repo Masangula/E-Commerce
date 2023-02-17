@@ -8,6 +8,8 @@ class AppTheme {
     textTheme: GoogleFonts.quicksandTextTheme(Typography.blackCupertino),
     appBarTheme: AppBarTheme(
       surfaceTintColor: lightColorScheme.surface,
+      elevation: 0,
+      scrolledUnderElevation: 0,
     ),
   );
 
@@ -17,6 +19,8 @@ class AppTheme {
     textTheme: GoogleFonts.quicksandTextTheme(Typography.whiteCupertino),
     appBarTheme: AppBarTheme(
       surfaceTintColor: darkColorScheme.surface,
+      elevation: 0,
+      scrolledUnderElevation: 0,
     ),
   );
 
