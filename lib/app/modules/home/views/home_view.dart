@@ -115,45 +115,53 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       body: Obx(
-        () => controller.isGettingProducts.value
-            ? Padding(
-                padding: const EdgeInsets.all(8),
-                child: MasonryGridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return buildProductListShimer(index: index);
-                    }),
-              )
-            : ((controller.isFiltering.value &&
-                        controller.filteredListOfProducts.isEmpty) ||
-                    controller.listOfProducts.isEmpty)
-                ? CustomMessage(
-                    lottiesName: "noInternet.json",
-                    textMessage: "Sorry, No product found!",
-                    leftPadding: Get.width * 0.1,
-                    height: 200,
-                    width: 200,
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
+        () => controller.connectionStatus.value == 0
+            ? CustomMessage(
+                lottiesName: "noResult.json",
+                textMessage:
+                    "Your Device doesn't have internet connection. Please turn on mobile data or wifi to continue!",
+                leftPadding: Get.width * 0.12,
+                height: 300,
+                width: 300)
+            : controller.isGettingProducts.value
+                ? Padding(
+                    padding: const EdgeInsets.all(8),
                     child: MasonryGridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 4,
-                      crossAxisSpacing: 4,
-                      itemCount: controller.isFiltering.value
-                          ? controller.filteredListOfProducts.length
-                          : controller.listOfProducts.length,
-                      itemBuilder: (context, index) {
-                        return ProductItemWidget(
-                            product: controller.isFiltering.value
-                                ? controller.filteredListOfProducts[index]
-                                : controller.listOfProducts[index]);
-                      },
-                    ),
-                  ),
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 4,
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          return buildProductListShimer(index: index);
+                        }),
+                  )
+                : ((controller.isFiltering.value &&
+                            controller.filteredListOfProducts.isEmpty) ||
+                        controller.listOfProducts.isEmpty)
+                    ? CustomMessage(
+                        lottiesName: "noInternet.json",
+                        textMessage: "Sorry, No product found!",
+                        leftPadding: Get.width * 0.1,
+                        height: 200,
+                        width: 200,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: MasonryGridView.count(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 4,
+                          itemCount: controller.isFiltering.value
+                              ? controller.filteredListOfProducts.length
+                              : controller.listOfProducts.length,
+                          itemBuilder: (context, index) {
+                            return ProductItemWidget(
+                                product: controller.isFiltering.value
+                                    ? controller.filteredListOfProducts[index]
+                                    : controller.listOfProducts[index]);
+                          },
+                        ),
+                      ),
       ),
     );
   }
