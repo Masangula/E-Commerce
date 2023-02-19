@@ -7,6 +7,7 @@ class ProductsProvider extends GetConnect {
     timeout: const Duration(
       seconds: 60,
     ),
+    allowAutoSignedCert: true,
   );
 
   Future fetchingProducts() async {
