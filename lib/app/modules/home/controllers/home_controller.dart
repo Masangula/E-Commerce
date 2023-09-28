@@ -15,7 +15,7 @@ class HomeController extends GetxController {
   var connectionStatus = 0.obs;
   var error = "";
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  late StreamSubscription<ConnectivityResult> connectivitySubscription;
 
 
   final ProductsProvider productsProvider = ProductsProvider();
@@ -45,7 +45,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     initConnectivity();
-    _connectivitySubscription =
+    connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     getProducts();
     super.onInit();
